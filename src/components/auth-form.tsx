@@ -9,7 +9,6 @@ type Mode = "login" | "signup";
 
 export function AuthForm({ mode }: { mode: Mode }) {
   const router = useRouter();
-  const supabase = createClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -22,6 +21,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
     setError(null);
     setMessage(null);
     setLoading(true);
+    const supabase = createClient();
 
     if (mode === "signup") {
       const { data, error: signUpError } = await supabase.auth.signUp({
@@ -29,7 +29,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
         password,
         options: {
           data: { full_name: fullName },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
         },
       });
 

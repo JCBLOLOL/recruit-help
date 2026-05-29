@@ -19,11 +19,16 @@
 | Field | Value |
 |-------|--------|
 | Site URL | `https://recruit-help.vercel.app` |
-| Redirect URLs | `https://recruit-help.vercel.app/auth/callback` |
+| Redirect URLs | Add **all** of these (one per line): |
 
-Also add for local dev:
+```
+https://recruit-help.vercel.app/auth/callback
+https://recruit-help.vercel.app/auth/confirm
+http://localhost:3000/auth/callback
+http://localhost:3000/auth/confirm
+```
 
-- `http://localhost:3000/auth/callback`
+**Important:** Do **not** use `recruit-help.com` here until that domain is connected to Vercel in Cloudflare. An unconnected custom domain causes **404** when you click the email link.
 
 ## 4. Run the database schema
 
@@ -57,3 +62,13 @@ npm run dev
 3. In Supabase **Table Editor** → `profiles` → your row exists
 
 Done — M1 complete.
+
+## Troubleshooting: 404 after email link
+
+1. **Check the broken URL in your browser bar.**  
+   - If it says `recruit-help.com` → change Supabase URLs to `recruit-help.vercel.app` (custom domain not wired up yet).  
+   - If it says `/auth/callback` on vercel.app → add that URL to Supabase **Redirect URLs** and redeploy Vercel.
+
+2. **Easier testing:** Supabase → **Authentication** → **Email** → turn **off** “Confirm email”, redeploy, sign up again — you go straight to `/dashboard` with no email link.
+
+3. **Or** skip the email: sign up, then use **Log in** with the same password.
