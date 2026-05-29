@@ -17,9 +17,20 @@ export default function Home() {
           <li>✓ Highlight clips (coming soon)</li>
           <li>✓ Shareable coach-friendly page (coming soon)</li>
         </ul>
-        <p className="mt-12 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-400">
-          Milestone M0 — If you see this page on Vercel, your deploy works.
-        </p>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <a
+            href="/signup"
+            className="rounded-lg bg-emerald-500 px-6 py-2.5 font-medium text-slate-950 hover:bg-emerald-400"
+          >
+            Create account
+          </a>
+          <a
+            href="/login"
+            className="rounded-lg border border-slate-600 px-6 py-2.5 font-medium text-slate-200 hover:border-slate-400"
+          >
+            Log in
+          </a>
+        </div>
       </main>
     </div>
   );

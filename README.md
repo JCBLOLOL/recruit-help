@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [Next.js](https://nextjs.org) (App Router)
 - [Tailwind CSS](https://tailwindcss.com)
 - Vercel (hosting)
-- Supabase (coming in M1 — auth + database)
+- [Supabase](https://supabase.com) (auth + database) — see [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
 
 ## Deploy to Vercel
 
