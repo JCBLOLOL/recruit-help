@@ -46,11 +46,16 @@ export default async function DashboardPage() {
           Dashboard
         </p>
         <h1 className="mt-2 text-3xl font-bold">Hi, {displayName}</h1>
-        <p className="mt-2 text-slate-400">
-          You&apos;re logged in. Milestone M1 is working.
-        </p>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Link
+            href="/profile/edit"
+            className="rounded-lg bg-emerald-500 px-6 py-2.5 font-medium text-slate-950 hover:bg-emerald-400"
+          >
+            Edit profile
+          </Link>
+        </div>
 
-        <div className="mt-10 rounded-xl border border-slate-800 bg-slate-900 p-6">
+        <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="font-semibold">Profile status</h2>
           {profile ? (
             <ul className="mt-4 space-y-2 text-sm text-slate-300">
@@ -58,28 +63,24 @@ export default async function DashboardPage() {
                 Sport: <span className="text-white">{profile.sport}</span>
               </li>
               <li>
-                Profile link slug:{" "}
+                Slug:{" "}
                 <span className="font-mono text-white">{profile.slug}</span>
               </li>
               <li>
                 Public:{" "}
                 <span className="text-white">
-                  {profile.is_public ? "Yes" : "No (coming in M3)"}
+                  {profile.is_public ? "Yes" : "No (M3)"}
                 </span>
               </li>
             </ul>
           ) : (
             <p className="mt-4 text-sm text-amber-300">
-              No profile row found. Run the SQL in{" "}
-              <code className="rounded bg-slate-800 px-1">supabase/schema.sql</code>{" "}
-              and sign up again, or ask for help.
+              No profile — run supabase/schema.sql
             </p>
           )}
         </div>
 
-        <p className="mt-8 text-sm text-slate-500">
-          Next up (M2): edit your full athlete profile.
-        </p>
+        <p className="mt-8 text-sm text-slate-500">Next: M3 public page</p>
       </main>
     </div>
   );
