@@ -19,27 +19,30 @@ export function AppShell({
     <div className="flex min-h-dvh flex-col bg-slate-950 text-slate-50">
       <header className="sticky top-0 z-20 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur">
         <div
-          className={`mx-auto flex ${width} items-center justify-between px-4 py-4 sm:px-8`}
+          className={`mx-auto flex ${width} items-center justify-between gap-4 px-4 py-4 sm:px-8`}
         >
-          {backHref ? (
-            <Link
-              href={backHref}
-              className="text-sm font-medium text-emerald-400 hover:text-emerald-300"
-            >
-              ← {backLabel}
-            </Link>
-          ) : (
+          <div className="flex min-w-0 items-center gap-3 sm:gap-5">
+            {backHref && (
+              <Link
+                href={backHref}
+                className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-200 hover:border-slate-500 hover:bg-slate-900"
+              >
+                ← {backLabel}
+              </Link>
+            )}
             <Link
               href="/"
-              className="text-sm font-semibold tracking-wide text-emerald-400"
+              className="truncate text-sm font-semibold tracking-wide text-emerald-400 hover:text-emerald-300"
             >
               Recruit Help
             </Link>
-          )}
-          {right ?? <span />}
+          </div>
+          <div className="shrink-0">{right ?? null}</div>
         </div>
       </header>
-      <main className={`mx-auto w-full flex-1 ${width} px-4 py-8 sm:px-8 sm:py-10`}>
+      <main
+        className={`mx-auto w-full flex-1 ${width} px-4 py-8 sm:px-8 sm:py-10`}
+      >
         {children}
       </main>
     </div>

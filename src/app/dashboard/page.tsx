@@ -32,6 +32,8 @@ export default async function DashboardPage() {
   return (
     <AppShell
       wide
+      backHref="/"
+      backLabel="Home"
       right={
         <form action="/auth/signout" method="post">
           <button
@@ -58,6 +60,12 @@ export default async function DashboardPage() {
             className="rounded-lg bg-emerald-500 px-6 py-2.5 font-medium text-slate-950 hover:bg-emerald-400"
           >
             Edit profile
+          </Link>
+          <Link
+            href="/videos"
+            className="rounded-lg border border-slate-600 px-6 py-2.5 font-medium text-slate-200 hover:border-slate-400"
+          >
+            Videos
           </Link>
           {profile?.is_public && (
             <Link

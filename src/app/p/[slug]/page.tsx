@@ -31,13 +31,21 @@ export default async function PublicProfilePage({
   return (
     <div className="min-h-dvh bg-slate-950 text-slate-50">
       <header className="border-b border-slate-800/80">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-8">
-          <Link
-            href="/"
-            className="text-sm font-semibold tracking-wide text-emerald-400"
-          >
-            Recruit Help
-          </Link>
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
+          <div className="flex items-center gap-3 sm:gap-5">
+            <Link
+              href="/"
+              className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-200 hover:border-slate-500 hover:bg-slate-900"
+            >
+              ← Home
+            </Link>
+            <Link
+              href="/"
+              className="text-sm font-semibold tracking-wide text-emerald-400"
+            >
+              Recruit Help
+            </Link>
+          </div>
           {profile.contact_email && (
             <a
               href={`mailto:${profile.contact_email}`}

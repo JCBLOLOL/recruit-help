@@ -63,6 +63,11 @@ npm run dev
 
 Done — M1 complete.
 
+## M4 — videos
+
+1. Run `supabase/m4-videos.sql` in the SQL Editor.
+2. Visit `/videos` while logged in to upload MP4/MOV (max 3, 500MB each).
+
 ## Troubleshooting: 404 after email link
 
 1. **Check the broken URL in your browser bar.**  
