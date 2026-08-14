@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { setProfilePublic } from "./actions";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -22,6 +23,10 @@ export default async function DashboardPage() {
     profile?.full_name ||
     (user.user_metadata?.full_name as string | undefined) ||
     user.email;
+
+  const publicUrl = profile
+    ? `https://recruit-help.vercel.app/p/${profile.slug}`
+    : null;
 
   return (
     <div className="min-h-full bg-slate-950 text-slate-50">
@@ -46,6 +51,7 @@ export default async function DashboardPage() {
           Dashboard
         </p>
         <h1 className="mt-2 text-3xl font-bold">Hi, {displayName}</h1>
+
         <div className="mt-10 flex flex-wrap gap-4">
           <Link
             href="/profile/edit"
@@ -63,6 +69,48 @@ export default async function DashboardPage() {
           )}
         </div>
 
+        {profile && (
+          <div className="mt-6 rounded-xl border border-emerald-800/50 bg-emerald-950/30 p-6">
+            <h2 className="font-semibold text-emerald-300">
+              Share with coaches
+            </h2>
+            {profile.is_public ? (
+              <>
+                <p className="mt-2 text-sm text-slate-300">
+                  Your profile is <strong className="text-white">public</strong>.
+                </p>
+                <p className="mt-3 break-all rounded-lg bg-slate-900 px-3 py-2 font-mono text-sm text-emerald-400">
+                  {publicUrl}
+                </p>
+                <form action={setProfilePublic} className="mt-4">
+                  <input type="hidden" name="make_public" value="false" />
+                  <button
+                    type="submit"
+                    className="text-sm text-slate-400 underline hover:text-white"
+                  >
+                    Make private
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <p className="mt-2 text-sm text-slate-300">
+                  Profile is private. Coaches can&apos;t see it yet.
+                </p>
+                <form action={setProfilePublic} className="mt-4">
+                  <input type="hidden" name="make_public" value="true" />
+                  <button
+                    type="submit"
+                    className="rounded-lg bg-emerald-500 px-6 py-2.5 font-medium text-slate-950 hover:bg-emerald-400"
+                  >
+                    Make public
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="font-semibold">Profile status</h2>
           {profile ? (
@@ -77,14 +125,9 @@ export default async function DashboardPage() {
               <li>
                 Public:{" "}
                 <span className="text-white">
-                  {profile.is_public ? "Yes" : "No — turn on in Edit profile"}
+                  {profile.is_public ? "Yes" : "No"}
                 </span>
               </li>
-              {profile.is_public && (
-                <li className="break-all text-emerald-400">
-                  /p/{profile.slug}
-                </li>
-              )}
             </ul>
           ) : (
             <p className="mt-4 text-sm text-amber-300">
@@ -92,8 +135,6 @@ export default async function DashboardPage() {
             </p>
           )}
         </div>
-
-        <p className="mt-8 text-sm text-slate-500">Next: M4 video upload</p>
       </main>
     </div>
   );

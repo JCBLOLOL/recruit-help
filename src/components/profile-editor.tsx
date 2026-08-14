@@ -100,14 +100,19 @@ export function ProfileEditor({
           Profile link slug:{" "}
           <span className="font-mono text-slate-300">{profile.slug}</span>
         </p>
-        <label className="flex items-center gap-2 text-sm text-slate-300">
+        <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-emerald-800 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-100">
           <input
             type="checkbox"
             name="is_public"
-            defaultChecked={profile.is_public}
-            className="h-4 w-4 rounded border-slate-600"
+            defaultChecked={Boolean(profile.is_public)}
+            className="h-5 w-5 accent-emerald-500"
           />
-          Make profile public (shareable coach link)
+          <span>
+            <strong className="block text-white">Make profile public</strong>
+            <span className="text-slate-400">
+              Coaches can open your share link
+            </span>
+          </span>
         </label>
         <div>
           <label htmlFor="full_name" className={labelClass}>
