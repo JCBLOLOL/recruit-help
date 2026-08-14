@@ -22,9 +22,9 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+    <section className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8">
       <h2 className="text-lg font-semibold text-white">{title}</h2>
-      <div className="mt-4 space-y-4">{children}</div>
+      <div className="mt-5 space-y-4">{children}</div>
     </section>
   );
 }
@@ -80,7 +80,7 @@ export function ProfileEditor({
     : null;
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form action={formAction} className="space-y-6">
       <input type="hidden" name="headshot_path" value={headshotPath} />
 
       {state.message && (
@@ -526,13 +526,15 @@ export function ProfileEditor({
         </div>
       </Section>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-lg bg-emerald-500 py-3 font-medium text-slate-950 hover:bg-emerald-400 disabled:opacity-50 sm:w-auto sm:px-8"
-      >
-        {pending ? "Saving…" : "Save profile"}
-      </button>
+      <div className="sticky bottom-4 z-10 rounded-2xl border border-slate-800 bg-slate-950/95 p-4 backdrop-blur">
+        <button
+          type="submit"
+          disabled={pending}
+          className="w-full rounded-lg bg-emerald-500 py-3 font-medium text-slate-950 hover:bg-emerald-400 disabled:opacity-50 sm:w-auto sm:px-10"
+        >
+          {pending ? "Saving…" : "Save profile"}
+        </button>
+      </div>
     </form>
   );
 }
