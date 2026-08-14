@@ -84,6 +84,7 @@ export async function saveProfile(
       ),
       social_links: social,
       headshot_path: emptyToNull(formData.get("headshot_path") as string),
+      is_public: formData.get("is_public") === "on",
       updated_at: new Date().toISOString(),
     })
     .eq("id", profile.id);
@@ -91,6 +92,12 @@ export async function saveProfile(
   if (profileError) {
     return { ok: false, message: profileError.message };
   }
+
+  const { data: updated } = await supabase
+    .from("profiles")
+    .select("slug")
+    .eq("id", profile.id)
+    .single();
 
   const { error: extError } = await supabase
     .from("external_profiles")
@@ -132,5 +139,8 @@ export async function saveProfile(
 
   revalidatePath("/dashboard");
   revalidatePath("/profile/edit");
+  if (updated?.slug) {
+    revalidatePath(`/p/${updated.slug}`);
+  }
   return { ok: true, message: "Profile saved." };
 }

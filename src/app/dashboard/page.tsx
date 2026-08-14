@@ -53,6 +53,14 @@ export default async function DashboardPage() {
           >
             Edit profile
           </Link>
+          {profile?.is_public && (
+            <Link
+              href={`/p/${profile.slug}`}
+              className="rounded-lg border border-slate-600 px-6 py-2.5 font-medium text-slate-200 hover:border-slate-400"
+            >
+              View public page
+            </Link>
+          )}
         </div>
 
         <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-6">
@@ -69,9 +77,14 @@ export default async function DashboardPage() {
               <li>
                 Public:{" "}
                 <span className="text-white">
-                  {profile.is_public ? "Yes" : "No (M3)"}
+                  {profile.is_public ? "Yes" : "No — turn on in Edit profile"}
                 </span>
               </li>
+              {profile.is_public && (
+                <li className="break-all text-emerald-400">
+                  /p/{profile.slug}
+                </li>
+              )}
             </ul>
           ) : (
             <p className="mt-4 text-sm text-amber-300">
@@ -80,7 +93,7 @@ export default async function DashboardPage() {
           )}
         </div>
 
-        <p className="mt-8 text-sm text-slate-500">Next: M3 public page</p>
+        <p className="mt-8 text-sm text-slate-500">Next: M4 video upload</p>
       </main>
     </div>
   );

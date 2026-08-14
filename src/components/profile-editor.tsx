@@ -100,6 +100,15 @@ export function ProfileEditor({
           Profile link slug:{" "}
           <span className="font-mono text-slate-300">{profile.slug}</span>
         </p>
+        <label className="flex items-center gap-2 text-sm text-slate-300">
+          <input
+            type="checkbox"
+            name="is_public"
+            defaultChecked={profile.is_public}
+            className="h-4 w-4 rounded border-slate-600"
+          />
+          Make profile public (shareable coach link)
+        </label>
         <div>
           <label htmlFor="full_name" className={labelClass}>
             Full name

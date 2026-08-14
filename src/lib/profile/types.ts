@@ -40,6 +40,7 @@ export type ProfileRow = {
   parent_email_optional: string | null;
   social_links: SocialLinks;
   headshot_path: string | null;
+  is_public: boolean;
 };
 
 export type ExternalProfileRow = {
