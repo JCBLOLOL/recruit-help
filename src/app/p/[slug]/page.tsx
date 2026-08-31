@@ -48,37 +48,48 @@ export default async function PublicProfilePage({
     notFound();
   }
 
-  const [{ data: awards }, { data: external }, { data: videos }] =
-    await Promise.all([
-      supabase
-        .from("awards")
-        .select("title, year_optional")
-        .eq("profile_id", profile.id)
-        .order("sort_order"),
-      supabase
-        .from("external_profiles")
-        .select("ncsa_url, perfect_game_url")
-        .eq("profile_id", profile.id)
-        .maybeSingle(),
-      supabase
-        .from("videos")
-        .select("id, title, storage_path")
-        .eq("profile_id", profile.id)
-        .order("created_at", { ascending: false }),
-    ]);
+  const awardsResult = await supabase
+    .from("awards")
+    .select("title, year_optional")
+    .eq("profile_id", profile.id)
+    .order("sort_order");
 
-  const videoList = videos ?? [];
+  const externalResult = await supabase
+    .from("external_profiles")
+    .select("ncsa_url, perfect_game_url")
+    .eq("profile_id", profile.id)
+    .maybeSingle();
+
+  const videosResult = await supabase
+    .from("videos")
+    .select("id, title, storage_path")
+    .eq("profile_id", profile.id)
+    .order("created_at", { ascending: false });
+
+  const awards = awardsResult.error ? [] : (awardsResult.data ?? []);
+  const external = externalResult.error ? null : externalResult.data;
+  const videoList = videosResult.error ? [] : (videosResult.data ?? []);
   const videoIds = videoList.map((v) => v.id);
 
-  const { data: clips } =
-    videoIds.length > 0
-      ? await supabase
-          .from("clips")
-          .select("id, video_id, label, start_sec, end_sec, is_featured, sort_order")
-          .in("video_id", videoIds)
-          .order("is_featured", { ascending: false })
-          .order("sort_order")
-      : { data: [] };
+  let clips: {
+    id: string;
+    video_id: string;
+    label: string;
+    start_sec: number;
+    end_sec: number;
+    is_featured: boolean;
+    sort_order: number;
+  }[] = [];
+
+  if (videoIds.length > 0) {
+    const clipsResult = await supabase
+      .from("clips")
+      .select("id, video_id, label, start_sec, end_sec, is_featured, sort_order")
+      .in("video_id", videoIds)
+      .order("is_featured", { ascending: false })
+      .order("sort_order");
+    if (!clipsResult.error) clips = clipsResult.data ?? [];
+  }
 
   const videoUrlById = new Map<string, string>();
   await Promise.all(
@@ -105,7 +116,7 @@ export default async function PublicProfilePage({
 
   const location = [profile.city, profile.state].filter(Boolean).join(", ");
 
-  const clipsWithVideo = (clips ?? [])
+  const clipsWithVideo = clips
     .map((clip) => ({
       ...clip,
       videoUrl: videoUrlById.get(clip.video_id) ?? null,

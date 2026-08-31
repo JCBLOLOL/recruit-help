@@ -92,3 +92,31 @@ export async function deleteVideo(formData: FormData) {
   revalidatePath("/videos");
   revalidatePath("/dashboard");
 }
+
+export async function renameVideo(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const videoId = String(formData.get("video_id") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  if (!videoId || !title) return;
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id, slug")
+    .eq("user_id", user.id)
+    .single();
+  if (!profile) return;
+
+  await supabase
+    .from("videos")
+    .update({ title })
+    .eq("id", videoId)
+    .eq("profile_id", profile.id);
+
+  revalidatePath("/videos");
+  if (profile.slug) revalidatePath(`/p/${profile.slug}`);
+}

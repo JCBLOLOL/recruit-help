@@ -96,10 +96,20 @@ export function ProfileEditor({
       )}
 
       <Section title="Basics">
-        <p className="text-sm text-slate-500">
-          Profile link slug:{" "}
-          <span className="font-mono text-slate-300">{profile.slug}</span>
-        </p>
+        <div>
+          <label htmlFor="slug" className={labelClass}>
+            Profile URL name
+          </label>
+          <input
+            id="slug"
+            name="slug"
+            defaultValue={profile.slug}
+            className={inputClass}
+          />
+          <p className="mt-1 text-xs text-slate-500">
+            recruit-help.vercel.app/p/{profile.slug}
+          </p>
+        </div>
         <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-emerald-800 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-100">
           <input
             type="checkbox"
@@ -324,8 +334,8 @@ export function ProfileEditor({
               ["batting_avg", "Batting avg"],
               ["obp", "OBP"],
               ["era", "ERA"],
-              ["fb_velo", "FB velo"],
-              ["exit_velo", "Exit velo"],
+              ["fb_velo", "FB velocity"],
+              ["exit_velo", "Exit velocity"],
               ["sixty_time", "60-yard (sec)"],
             ] as const
           ).map(([key, label]) => (

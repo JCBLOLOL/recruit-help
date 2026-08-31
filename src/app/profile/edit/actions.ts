@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Sport, StatsJson, SocialLinks } from "@/lib/profile/types";
+import { slugify } from "@/lib/profile/slug";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -27,7 +28,7 @@ export async function saveProfile(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id, slug")
     .eq("user_id", user.id)
     .single();
 
@@ -52,11 +53,29 @@ export async function saveProfile(
 
   const gradRaw = (formData.get("grad_year") as string)?.trim();
   const gpaRaw = (formData.get("gpa_optional") as string)?.trim();
+  const fullName = (formData.get("full_name") as string).trim();
+  const requestedSlug = slugify(
+    (formData.get("slug") as string) || fullName || profile.slug,
+  );
+
+  let finalSlug = requestedSlug;
+  if (finalSlug !== profile.slug) {
+    const { data: taken } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("slug", finalSlug)
+      .neq("id", profile.id)
+      .maybeSingle();
+    if (taken) {
+      finalSlug = `${requestedSlug}-${Math.floor(Math.random() * 900 + 100)}`;
+    }
+  }
 
   const { error: profileError } = await supabase
     .from("profiles")
     .update({
-      full_name: (formData.get("full_name") as string).trim(),
+      full_name: fullName,
+      slug: finalSlug,
       sport: formData.get("sport") as Sport,
       grad_year: gradRaw ? parseInt(gradRaw, 10) : null,
       position_primary: emptyToNull(formData.get("position_primary") as string),
@@ -92,12 +111,6 @@ export async function saveProfile(
   if (profileError) {
     return { ok: false, message: profileError.message };
   }
-
-  const { data: updated } = await supabase
-    .from("profiles")
-    .select("slug")
-    .eq("id", profile.id)
-    .single();
 
   const { error: extError } = await supabase
     .from("external_profiles")
@@ -139,8 +152,9 @@ export async function saveProfile(
 
   revalidatePath("/dashboard");
   revalidatePath("/profile/edit");
-  if (updated?.slug) {
-    revalidatePath(`/p/${updated.slug}`);
+  revalidatePath(`/p/${finalSlug}`);
+  if (profile.slug !== finalSlug) {
+    revalidatePath(`/p/${profile.slug}`);
   }
   return { ok: true, message: "Profile saved." };
 }

@@ -103,7 +103,14 @@ export default async function VideosPage() {
                         {new Date(video.created_at).toLocaleDateString()}
                       </p>
                     </div>
-                    <form action={deleteVideo}>
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href={`/videos/${video.id}/clips`}
+                        className="text-sm text-emerald-400 hover:underline"
+                      >
+                        Clips
+                      </Link>
+                      <form action={deleteVideo}>
                       <input type="hidden" name="video_id" value={video.id} />
                       <button
                         type="submit"
