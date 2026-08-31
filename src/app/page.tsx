@@ -31,16 +31,19 @@ export default function Home() {
 
       <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-4 py-16 sm:px-8 lg:py-24">
         <div className="max-w-3xl">
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-emerald-400">
+          <p className="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-emerald-400">
             Baseball &amp; softball recruiting
+          </p>
+          <p className="mb-4 text-base text-slate-400">
+            Built for athletes, by athletes.
           </p>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Your recruiting profile,{" "}
             <span className="text-emerald-400">one link.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300 sm:text-xl">
-            Build a coach-ready page with your stats, bio, and highlights —
-            then share a simple link. Affordable and built for athletes.
+            Build a coach-ready page with your stats, bio, and game film
+            highlights — then share one simple link. Free to start.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
@@ -60,9 +63,9 @@ export default function Home() {
 
         <ul className="mt-16 grid gap-4 sm:grid-cols-3">
           {[
-            "Athlete profiles",
+            "Complete athlete profiles",
             "Shareable coach page",
-            "Highlight clips soon",
+            "Highlight clips from game film",
           ].map((item) => (
             <li
               key={item}
@@ -74,6 +77,10 @@ export default function Home() {
           ))}
         </ul>
       </main>
+
+      <footer className="relative z-10 border-t border-slate-800/60 py-6 text-center text-sm text-slate-500">
+        Recruit Help · Built for athletes, by athletes
+      </footer>
     </div>
   );
 }
